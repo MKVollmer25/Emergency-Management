@@ -1,30 +1,6 @@
 function Dashboard() {
   return (
-    <>
-      <h1>User Dashboard</h1>
-      <div>
-        <button>
-          Flood
-        </button>
-        <button>
-          Fire
-        </button>
-        <button>
-          Water
-        </button>
-      </div>
-      <div>
-        <button>
-          Sewer
-        </button>
-        <button>
-          Earthquake
-        </button>
-        <button>
-          Power
-        </button>
-      </div>
-    </>
+    <header class="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">Top of page</header>
   )
 }
 
