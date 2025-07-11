@@ -1,24 +1,17 @@
 const express = require('express');
+const cors = require('cors');
+const authRoutes = require('./routes/auth');
+
 const app = express();
 
-const cors = require('cors');
 app.use(cors());
+app.use(express.json());  // Parse JSON bodies
 
-// Middleware to parse JSON
-app.use(express.json());
+// Mount Authentication Routes
+app.use('/api', authRoutes);
 
-// Basic Route
-app.get('/', (req, res) => {
-  res.send('Hello from Node.js Backend!');
-});
-
-// Example API Route
-app.get('/api/data', (req, res) => {
-  res.json({ message: 'Here is your data.', data: [1, 2, 3] });
-});
-
-// Start Server
-const PORT = process.env.PORT || 3000;
+// Start the Server
+const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
