@@ -3,8 +3,9 @@ import { faWater } from '@fortawesome/free-solid-svg-icons';
 import { faFire } from '@fortawesome/free-solid-svg-icons';
 import { faDroplet } from '@fortawesome/free-solid-svg-icons';
 import { faToilet } from '@fortawesome/free-solid-svg-icons';
-import { faHouseChimneyCrack } from '@fortawesome/free-solid-svg-icons';
+import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 function Admin() {
   const date = new Date()
@@ -30,11 +31,11 @@ function Admin() {
       <header className="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">
         WIP
       </header>
-      <div className="flex justify-between px-4 py-4">
+      <div className="max-w-7xl mx-auto flex justify-between px-4 py-4">
         <div>{formatted_date}, {formatted_time}</div>
         <div>BUTTONS</div>
       </div>
-      <main className="px-4 pb-16">
+      <main className="max-w-7xl mx-auto px-4 pb-16">
         <div>
           <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-900 p-4 rounded mb-6">
             <p className="text-lg font-semibold">Weather in San Francisco:</p>
@@ -85,9 +86,9 @@ function Admin() {
           </a>
           <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
-              <FontAwesomeIcon icon={faHouseChimneyCrack} size="2x" color="#000000" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Earthquake Dashboard</h2>
-              <p class="text-sm text-gray-600">Live earthquake incident tracking</p>
+              <FontAwesomeIcon icon={faBolt} size="2x" color="#D8D800" />
+              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Electrical Dashboard</h2>
+              <p class="text-sm text-gray-600">Live electrical incident tracking</p>
             </div>
             <div class="mt-2 text-right">
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>

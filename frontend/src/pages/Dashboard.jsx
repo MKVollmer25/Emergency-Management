@@ -1,4 +1,13 @@
+import { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+
 function Dashboard() {
+  const [is_visible, setIsVisible] = useState(false);
+
+  const toggleSection = () => {
+    setIsVisible((prev) => !prev);
+  };
+
   const date = new Date()
 
   const date_options = {
@@ -22,11 +31,11 @@ function Dashboard() {
       <header className="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">
         WIP
       </header>
-      <div className="flex justify-between px-4 py-4">
+      <div className="max-w-7xl mx-auto flex justify-between px-4 py-4 items-center">
         <div>{formatted_date}, {formatted_time}</div>
         <div>BUTTONS</div>
       </div>
-      <main className="px-4 pb-16">
+      <main className="max-w-7xl mx-auto px-4 pb-16 items-center">
         <div>
           <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-900 p-4 rounded mb-6">
             <p className="text-lg font-semibold">Weather in San Francisco:</p>
@@ -46,6 +55,37 @@ function Dashboard() {
             <h3 class="text-lg font-bold text-green-700 mb-2">View Your Complaints</h3>
             <p class="text-gray-600">Track the status of your past complaints and get updates.</p>
           </a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">Report History</h2>
+        </div>
+        <div class="text-center my-8">
+          <button id="toggleTrendsBtn" class="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 transition" onClick={toggleSection}>
+            {is_visible ? 'Hide Past Data' : 'Show Past Data'}
+          </button>
+        </div>
+        {is_visible && (
+          <div>
+            <div class="bg-white p-6 rounded-lg shadow mb-6">
+              <p class="text-lg font-semibold text-gray-700">WIP</p>
+            </div>
+          </div>
+        )}
+        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>
+          <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+            <MapContainer center={[47.6062, -122.3321]} zoom={13} className="h-full w-full">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[47.6062, -122.3321]}>
+                <Popup>
+                  Seattle, WA
+                </Popup>
+              </Marker>
+            </MapContainer>
+          </div>
         </div>
       </main>
     </>
