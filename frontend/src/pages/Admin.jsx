@@ -43,7 +43,7 @@ function Admin() {
             <p>Conditions: WIP</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 grid-rows-2 gap-6">
+        <div className="grid grid-cols-3 grid-rows-2 gap-6 mb-8">
           <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faWater} size="2x" color="#999999" />
@@ -104,6 +104,42 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
+        </div>
+        <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
+          Total Incidents: <span class="text-blue-600">WIP</span>
+        </div>
+        <div class="grid grid-cols-2 grid-rows-2 gap-6 mb-6">
+          <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold mb-2">By Category</h2>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold mb-2">Over Time</h2>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold mb-2">By Status</h2>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-lg font-semibold mb-2">By Location</h2>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
+          <h2 class="text-lg font-semibold mb-2">Recent Reports</h2>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>
+          <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+            <MapContainer center={[47.6062, -122.3321]} zoom={13} className="h-full w-full">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[47.6062, -122.3321]}>
+                <Popup>
+                  Seattle, WA
+                </Popup>
+              </Marker>
+            </MapContainer>
+          </div>
         </div>
       </main>
     </>
