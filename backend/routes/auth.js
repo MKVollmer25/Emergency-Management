@@ -24,16 +24,23 @@ router.post('/register', async (req, res) => {
 
 // Login User
 router.post('/login', (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
+  console.log("Login post detected")
+  console.log("Username: " + username)
+  console.log("Password: " + password)
 
-  db.get(`SELECT * FROM users WHERE email = ?`, [email], async (err, user) => {
+  db.get(`SELECT * FROM users WHERE username = ?`, [username], async (err, user) => {
     if (err || !user) {
-      return res.status(400).json({ error: 'Invalid email or password' });
+      console.log("Username does not exist")
+      return res.status(400).json({ error: 'Invalid username or password' });
     }
 
+    console.log(user.username)
+    console.log(user.password)
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      return res.status(400).json({ error: 'Invalid email or password' });
+      console.log("Invalid password")
+      return res.status(400).json({ error: 'Invalid username or password' });
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
