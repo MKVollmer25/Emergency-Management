@@ -1,28 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthAPI from '../Auth';
+import AuthAPI from '../components/Auth';
 
 function AdminLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  
-  /*
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({
-      name: nameRef.current.value,
-      password: passRef.current.value
-    });
-  };
-  */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await AuthAPI.post('/login', { username, password });
-      localStorage.setItem('token', res.data.token);
+      localStorage.setItem("token", res.data.token);
+      console.log("Token:", localStorage.getItem("token"));
       navigate('/admin');
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed');

@@ -6,9 +6,11 @@ import { faToilet } from '@fortawesome/free-solid-svg-icons';
 import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Admin() {
   const date = new Date()
+  const navigate = useNavigate()
 
   const date_options = {
     weekday: "long",
@@ -23,17 +25,33 @@ function Admin() {
     hour12: true
   }
 
+  const isAuthenticated = () => {
+    const token = localStorage.getItem('token')
+    console.log(token)
+    return token != null // or add extra checks like token expiration
+  };
+
+  const handleLogout = () => {
+    console.log("Token before logout:", localStorage.getItem("token"));
+    console.log(isAuthenticated())
+    localStorage.removeItem('token')
+    console.log("Logout request")
+    console.log("Token after logout:", localStorage.getItem("token"));
+  }
+
   const formatted_date = date.toLocaleDateString("en-US", date_options)
   const formatted_time = date.toLocaleTimeString("en-US", time_options)
 
   return (
     <>
       <header className="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">
-        WIP
+        {isAuthenticated() ? "Valid login" : "Invalid login"}
       </header>
       <div className="max-w-7xl mx-auto flex justify-between px-4 py-4">
         <div>{formatted_date}, {formatted_time}</div>
-        <div>BUTTONS</div>
+        <div>
+          <Link to='/adminlogin' onClick={handleLogout}>Log out</Link>
+        </div>
       </div>
       <main className="max-w-7xl mx-auto px-4 pb-16">
         <div>
