@@ -50,7 +50,7 @@ function Admin() {
       <div className="max-w-7xl mx-auto flex justify-between px-4 py-4">
         <div>{formatted_date}, {formatted_time}</div>
         <div>
-          <Link to='/adminlogin' onClick={handleLogout}>Log out</Link>
+          <Link to='/' onClick={handleLogout}>Log out</Link>
         </div>
       </div>
       <main className="max-w-7xl mx-auto px-4 pb-16">
