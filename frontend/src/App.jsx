@@ -6,6 +6,7 @@ import AdminLogin from './pages/AdminLogin'
 import Dashboard from './pages/Dashboard'
 import Admin from './pages/Admin'
 import ProtectedRoute from './components/ProtectedRoute'
+import NewComplaint from './pages/NewComplaint'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
       <Route path="/adminlogin" element={<AdminLogin />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+      <Route path="/new-complaint" element={<NewComplaint />} />
     </Routes>
   )
 }

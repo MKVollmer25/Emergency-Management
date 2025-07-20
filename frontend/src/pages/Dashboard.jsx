@@ -47,7 +47,7 @@ function Dashboard() {
           <p class="text-lg font-semibold text-gray-700">Total Complaints Filed: WIP</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <a class="bg-white border-t-4 border-blue-600 rounded-2xl p-6 shadow hover:bg-blue-50">
+          <a href="/new-complaint" class="bg-white border-t-4 border-blue-600 rounded-2xl p-6 shadow hover:bg-blue-50">
             <h3 class="text-lg font-bold text-blue-700 mb-2">File a New Complaint</h3>
             <p class="text-gray-600">Report emergencies quickly and easily.</p>
           </a>

@@ -15,6 +15,7 @@ const db = require('./db/db')
 const username = 'root';
 const password = '$2b$10$DIUtPYDhJwDtMI0jSEFPJOijFsDudcXB8QrL9jRg11mEhqqyTfYF2';
 
+/*
 db.run(
   `INSERT OR IGNORE INTO users (username, password) VALUES (?, ?)`,
   [username, password],
@@ -26,6 +27,7 @@ db.run(
     }
   }
 );
+*/
 
 // Start the Server
 const PORT = 5000;
