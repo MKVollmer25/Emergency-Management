@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
+const dataRoutes = require('./routes/data')
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(express.json());  // Parse JSON bodies
 
 // Mount Authentication Routes
 app.use('/api', authRoutes);
+app.use('/api', dataRoutes);
 
 const db = require('./db/db')
 
