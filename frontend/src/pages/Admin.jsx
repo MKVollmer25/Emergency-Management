@@ -62,7 +62,7 @@ function Admin() {
           </div>
         </div>
         <div className="grid grid-cols-3 grid-rows-2 gap-6 mb-8">
-          <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/flood" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faWater} size="2x" color="#999999" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Flood Dashboard</h2>
@@ -72,7 +72,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/fire" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faFire} size="2x" color="#FF7700" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Fire Dashboard</h2>
@@ -82,7 +82,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/water" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faDroplet} size="2x" color="#0000FF" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Water Dashboard</h2>
@@ -92,7 +92,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/sewer" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faToilet} size="2x" color="#993333" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Sewer Dashboard</h2>
@@ -102,7 +102,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/electrical" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faBolt} size="2x" color="#D8D800" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Electrical Dashboard</h2>
@@ -112,7 +112,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/misc" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faCircleQuestion} size="2x" color="#555555" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Miscellaneous Dashboard</h2>

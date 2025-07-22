@@ -7,6 +7,13 @@ import Dashboard from './pages/Dashboard'
 import Admin from './pages/Admin'
 import ProtectedRoute from './components/ProtectedRoute'
 import NewComplaint from './pages/NewComplaint'
+import FloodDashboard from './pages/FloodDashboard'
+import FireDashboard from './pages/FireDashboard'
+import WaterDashboard from './pages/WaterDashboard'
+import SewerDashboard from './pages/SewerDashboard'
+import ElectricalDashboard from './pages/ElectricalDashboard'
+import MiscDashboard from './pages/MiscDashboard'
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,6 +26,12 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
       <Route path="/new-complaint" element={<NewComplaint />} />
+      <Route path="/flood" element={<FloodDashboard />} />
+      <Route path="/fire" element={<FireDashboard />} />
+      <Route path="/water" element={<WaterDashboard />} />
+      <Route path="/sewer" element={<SewerDashboard />} />
+      <Route path="/electrical" element={<ElectricalDashboard />} />
+      <Route path="/misc" element={<MiscDashboard />} />
     </Routes>
   )
 }
