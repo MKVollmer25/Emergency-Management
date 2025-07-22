@@ -35,4 +35,26 @@ db.serialize(() => {
   });
 });
 
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS reports (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      phone VARCHAR(15) NOT NULL,
+      category TEXT NOT NULL,
+      severity INT NOT NULL,
+      location TEXT NOT NULL,
+      date DATETIME NOT NULL,
+      description TEXT NOT NULL,
+      status TEXT NOT NULL
+    )
+  `, (err) => {
+    if (err) {
+      console.error('❌ Failed to create table:', err.message);
+    } else {
+      console.log('✅ Reports table ready.');
+    }
+  });
+});
+
 module.exports = db;
