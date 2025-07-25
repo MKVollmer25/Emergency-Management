@@ -36,6 +36,17 @@ db.serialize(() => {
 });
 
 db.serialize(() => {
+  db.run(`DROP TABLE reports`, 
+    (err) => {
+    if (err) {
+      console.error('❌ Failed to reset table:', err.message);
+    } else {
+      console.log('✅ Reports table reset.');
+    }
+  });
+});
+
+db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

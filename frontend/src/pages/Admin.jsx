@@ -7,8 +7,28 @@ import { faBolt } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import API from '../components/API';
 
 function Admin() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch data from API
+  useEffect(() => {
+    API.get('/get_data')
+      .then(response => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
   const date = new Date()
   const navigate = useNavigate()
 
@@ -50,7 +70,7 @@ function Admin() {
       <div className="max-w-7xl mx-auto flex justify-between px-4 py-4">
         <div>{formatted_date}, {formatted_time}</div>
         <div>
-          <Link to='/' onClick={handleLogout}>Log out</Link>
+          <Link to='/' className="hover:underline" onClick={handleLogout}>Log out</Link>
         </div>
       </div>
       <main className="max-w-7xl mx-auto px-4 pb-16">
@@ -62,7 +82,7 @@ function Admin() {
           </div>
         </div>
         <div className="grid grid-cols-3 grid-rows-2 gap-6 mb-8">
-          <a href="/flood" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/category/flood" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faWater} size="2x" color="#999999" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Flood Dashboard</h2>
@@ -72,7 +92,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/fire" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/category/fire" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faFire} size="2x" color="#FF7700" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Fire Dashboard</h2>
@@ -82,7 +102,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/water" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/category/water" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faDroplet} size="2x" color="#0000FF" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Water Dashboard</h2>
@@ -92,7 +112,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/sewer" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/category/sewer" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faToilet} size="2x" color="#993333" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Sewer Dashboard</h2>
@@ -102,7 +122,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/electrical" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/category/electrical" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faBolt} size="2x" color="#D8D800" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Electrical Dashboard</h2>
@@ -112,7 +132,7 @@ function Admin() {
               <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/misc" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+          <a href="/category/misc" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
             <div class="mb-2 text-center">
               <FontAwesomeIcon icon={faCircleQuestion} size="2x" color="#555555" />
               <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Miscellaneous Dashboard</h2>
@@ -142,6 +162,36 @@ function Admin() {
         </div>
         <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
           <h2 class="text-lg font-semibold mb-2">Recent Reports</h2>
+          <table className="table-auto border border-gray-300 w-full">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-4 py-2">ID</th>
+                <th className="border px-4 py-2">Name</th>
+                <th className="border px-4 py-2">Phone</th>
+                <th className="border px-4 py-2">Category</th>
+                <th className="border px-4 py-2">Severity</th>
+                <th className="border px-4 py-2">Location</th>
+                <th className="border px-4 py-2">Date</th>
+                <th className="border px-4 py-2">Description</th>
+                <th className="border px-4 py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map(row => (
+                <tr key={row.id}>
+                  <td className="border px-4 py-2">{row.id}</td>
+                  <td className="border px-4 py-2">{row.name}</td>
+                  <td className="border px-4 py-2">{row.phone}</td>
+                  <td className="border px-4 py-2">{row.category}</td>
+                  <td className="border px-4 py-2">{row.severity}</td>
+                  <td className="border px-4 py-2">{row.location}</td>
+                  <td className="border px-4 py-2">{row.date}</td>
+                  <td className="border px-4 py-2">{row.description}</td>
+                  <td className="border px-4 py-2">{row.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
           <h2 class="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthAPI from '../components/Auth';
+import API from '../components/API';
 
 function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -11,7 +11,7 @@ function AdminLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await AuthAPI.post('/login', { username, password });
+      const res = await API.post('/login', { username, password });
       localStorage.setItem("token", res.data.token);
       console.log("Token:", localStorage.getItem("token"));
       navigate('/admin');
