@@ -8,6 +8,7 @@ import Admin from './pages/Admin'
 import ProtectedRoute from './components/ProtectedRoute'
 import NewComplaint from './pages/NewComplaint'
 import CategoryDashboard from './pages/CategoryDashboard'
+import ReportPage from './pages/ReportPage'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +22,7 @@ function App() {
       <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
       <Route path="/new-complaint" element={<NewComplaint />} />
       <Route path="/category/:category" element={<ProtectedRoute><CategoryDashboard /></ProtectedRoute>} />
+      <Route path="/report/:id" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
     </Routes>
   )
 }

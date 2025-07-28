@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 import API from '../components/API';
 
 function CategoryDashboard() {
@@ -8,12 +8,12 @@ function CategoryDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const category_header = category.charAt(0).toUpperCase() + category.slice(1)
+  const category_name = category.charAt(0).toUpperCase() + category.slice(1)
 
-  console.log(category_header)
+  console.log(category_name)
 
   useEffect(() => {
-  API.get(`/category_data/${category}`)
+  API.get(`/category_data/${category_name}`)
     .then(response => {
       setData(response.data);
       setLoading(false);
@@ -27,8 +27,9 @@ function CategoryDashboard() {
 
   return (
   <div class="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
+    <Link to="/admin">Back</Link>
     <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
-      <h2 class="text-lg font-semibold mb-2">{category_header} Reports</h2>
+      <h2 class="text-lg font-semibold mb-2">{category_name} Reports</h2>
       <table className="table-auto border border-gray-300 w-full">
         <thead>
           <tr className="bg-gray-100">

@@ -59,6 +59,10 @@ function Admin() {
     console.log("Token after logout:", localStorage.getItem("token"));
   }
 
+  const viewReport = (id) => {
+    navigate("/report/" + id)
+  }
+
   const formatted_date = date.toLocaleDateString("en-US", date_options)
   const formatted_time = date.toLocaleTimeString("en-US", time_options)
 
@@ -174,6 +178,7 @@ function Admin() {
                 <th className="border px-4 py-2">Date</th>
                 <th className="border px-4 py-2">Description</th>
                 <th className="border px-4 py-2">Status</th>
+                <th className="border px-4 py-2">View</th>
               </tr>
             </thead>
             <tbody>
@@ -188,6 +193,9 @@ function Admin() {
                   <td className="border px-4 py-2">{row.date}</td>
                   <td className="border px-4 py-2">{row.description}</td>
                   <td className="border px-4 py-2">{row.status}</td>
+                  <td className="border px-4 py-2">
+                    <Link className="hover:underline" to={"/report/" + row.id}>View</Link>
+                  </td>
                 </tr>
               ))}
             </tbody>

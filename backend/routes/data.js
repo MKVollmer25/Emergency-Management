@@ -52,11 +52,19 @@ router.get('/get_misc_data', (req, res) => {
   });
 });
 
-router.get('/category_data/:category', (req, res) => {
-  const { category } = req.params
-  sql_category = category.charAt(0).toUpperCase() + category.slice(1)
-  console.log(sql_category)
-  db.all("SELECT * FROM reports WHERE category = ?", [sql_category], (err, rows) => {
+router.get('/category_data/:category_name', (req, res) => {
+  const { category_name } = req.params
+  console.log(category_name)
+  db.all("SELECT * FROM reports WHERE category = ?", [category_name], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
+router.get('/get_report/:id', (req, res) => {
+  const { id } = req.params
+  console.log(id)
+  db.all("SELECT * FROM reports WHERE id = ?", [id], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
