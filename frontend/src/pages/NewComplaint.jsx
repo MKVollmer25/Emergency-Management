@@ -1,6 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import API from '../components/API';
+
+function LocationMarker({ onSelect }) {
+  const [position, setPosition] = useState(null);
+
+  useMapEvents({
+    click(e) {
+      setPosition(e.latlng);
+      onSelect(e.latlng); // Pass the selected location up to parent
+    }
+  });
+
+  return position === null ? null : <Marker position={position} />;
+}
 
 function NewComplaint() {
   const [name, setName] = useState('');
@@ -10,6 +24,7 @@ function NewComplaint() {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [error, setError] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -39,15 +54,27 @@ function NewComplaint() {
     }
   };
 
+  const handlePhone = (e) => {
+    const input = e.target.value;
+    const filtered = input.replace(/[^0-9]/g, ''); // allow letters and spaces only
+    setPhone(filtered);
+  };
+
+  const severityFilter = (e) => {
+    if (["e", "E", "+", "-"].includes(e.key)) {
+      e.preventDefault();
+    }
+  }
+
   const handleSeverity = (e) => {
     const val = e.target.value;
     // Allow blank input
-    if (val === "") {
+    if (val == "") {
       setSeverity("");
     } else {
       // Convert to number and clamp between 1 and 5
       const num = Number(val);
-      if (num >= 1 && num <= 5) {
+      if (!isNaN(num) && Number.isInteger(num) && num >= 1 && num <= 5) {
         setSeverity(num);
       }
     }
@@ -72,7 +99,7 @@ function NewComplaint() {
           <input class="w-full px-4 py-2 border rounded"
           name="phone"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={handlePhone}
           required/>
         </div>
         <div>
@@ -101,6 +128,7 @@ function NewComplaint() {
           step="1"
           value={severity}
           onChange={handleSeverity}
+          onKeyDown={severityFilter}
           required />
         </div>
         <div>
@@ -118,6 +146,16 @@ function NewComplaint() {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           required />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold">Map</label>
+          <MapContainer center={[47.6062, -122.3321]} zoom={13} style={{ height: '400px', width: '100%' }}>
+            <TileLayer
+              attribution='&copy; OpenStreetMap contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <LocationMarker onSelect={setSelectedLocation} />
+          </MapContainer>
         </div>
         <div>
           <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition" onClick={handleSubmit}>Submit</button>

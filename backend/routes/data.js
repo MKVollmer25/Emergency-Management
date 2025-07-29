@@ -61,6 +61,15 @@ router.get('/category_data/:category_name', (req, res) => {
   });
 });
 
+router.get('/get_user_reports/:phone', (req, res) => {
+  const { phone } = req.params
+  console.log(phone)
+  db.all("SELECT * FROM reports WHERE phone = ?", [phone], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
 router.get('/get_report/:id', (req, res) => {
   const { id } = req.params
   console.log(id)

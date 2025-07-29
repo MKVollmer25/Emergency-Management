@@ -43,49 +43,18 @@ function Dashboard() {
             <p>Conditions: WIP</p>
           </div>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow mb-6">
-          <p class="text-lg font-semibold text-gray-700">Total Complaints Filed: WIP</p>
-        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <a href="/new-complaint" class="bg-white border-t-4 border-blue-600 rounded-2xl p-6 shadow hover:bg-blue-50">
             <h3 class="text-lg font-bold text-blue-700 mb-2">File a New Complaint</h3>
             <p class="text-gray-600">Report emergencies quickly and easily.</p>
           </a>
-          <a class="bg-white border-t-4 border-green-600 rounded-2xl p-6 shadow hover:bg-green-50">
+          <a href="/report-tracking" class="bg-white border-t-4 border-green-600 rounded-2xl p-6 shadow hover:bg-green-50">
             <h3 class="text-lg font-bold text-green-700 mb-2">View Your Complaints</h3>
             <p class="text-gray-600">Track the status of your past complaints and get updates.</p>
           </a>
         </div>
         <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
-          <h2 class="text-xl font-semibold mb-4 text-gray-700">Report History</h2>
-        </div>
-        <div class="text-center my-8">
-          <button id="toggleTrendsBtn" class="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 transition" onClick={toggleSection}>
-            {is_visible ? 'Hide Past Data' : 'Show Past Data'}
-          </button>
-        </div>
-        {is_visible && (
-          <div>
-            <div class="bg-white p-6 rounded-lg shadow mb-6">
-              <p class="text-lg font-semibold text-gray-700">WIP</p>
-            </div>
-          </div>
-        )}
-        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
-          <h2 class="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>
-          <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
-            <MapContainer center={[47.6062, -122.3321]} zoom={13} className="h-full w-full">
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[47.6062, -122.3321]}>
-                <Popup>
-                  Seattle, WA
-                </Popup>
-              </Marker>
-            </MapContainer>
-          </div>
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">Active Alerts</h2>
         </div>
       </main>
     </>

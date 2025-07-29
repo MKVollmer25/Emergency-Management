@@ -148,7 +148,7 @@ function Admin() {
           </a>
         </div>
         <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
-          Total Incidents: <span class="text-blue-600">WIP</span>
+          Total Incidents: <span class="text-blue-600">{data.length}</span>
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-6 mb-6">
           <div class="bg-white p-4 rounded shadow">
@@ -161,7 +161,7 @@ function Admin() {
             <h2 class="text-lg font-semibold mb-2">By Status</h2>
           </div>
           <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-lg font-semibold mb-2">By Location</h2>
+            <h2 class="text-lg font-semibold mb-2">Available Responders</h2>
           </div>
         </div>
         <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
