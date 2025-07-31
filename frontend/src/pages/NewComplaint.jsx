@@ -1,19 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import API from '../components/API';
 
-function LocationMarker({ onSelect }) {
-  const [position, setPosition] = useState(null);
-
+// 🔹 Marker that updates on map click
+function LocationMarker({ onSelect, selectedLocation }) {
   useMapEvents({
     click(e) {
-      setPosition(e.latlng);
-      onSelect(e.latlng); // Pass the selected location up to parent
+      onSelect(e.latlng);
     }
   });
 
-  return position === null ? null : <Marker position={position} />;
+  return selectedLocation ? <Marker position={selectedLocation} /> : null;
+}
+
+// 🔹 Button that uses the map instance
+function LocateControl({ shouldLocate, onLocated, clearTrigger }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!shouldLocate) return;
+
+    if (!navigator.geolocation) {
+      alert('Geolocation not supported.');
+      clearTrigger();
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const latlng = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        };
+        map.flyTo(latlng, 16);
+        onLocated(latlng);
+        clearTrigger();
+      },
+      (err) => {
+        alert('Failed to retrieve location.');
+        console.error(err);
+        clearTrigger();
+      }
+    );
+  }, [shouldLocate, map, onLocated, clearTrigger]);
+
+  return null;
 }
 
 function NewComplaint() {
@@ -25,7 +57,10 @@ function NewComplaint() {
   const [location, setLocation] = useState('');
   const [error, setError] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [shouldLocate, setShouldLocate] = useState(false);
   const navigate = useNavigate();
+
+  const handleLocate = () => setShouldLocate(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,6 +94,11 @@ function NewComplaint() {
     const filtered = input.replace(/[^0-9]/g, ''); // allow letters and spaces only
     setPhone(filtered);
   };
+
+  const handleMapLoad = (mapInstance) => {
+    mapRef.current = mapInstance
+    console.log("Map load function")
+  }
 
   const severityFilter = (e) => {
     if (["e", "E", "+", "-"].includes(e.key)) {
@@ -140,7 +180,7 @@ function NewComplaint() {
           required />
         </div>
         <div>
-          <label class="block text-sm font-semibold">Location</label>
+          <label class="block text-sm font-semibold">Location Description</label>
           <textarea class="w-full px-4 py-2 border rounded"
           name="location"
           value={location}
@@ -148,13 +188,25 @@ function NewComplaint() {
           required />
         </div>
         <div>
-          <label class="block text-sm font-semibold">Map</label>
-          <MapContainer center={[47.6062, -122.3321]} zoom={13} style={{ height: '400px', width: '100%' }}>
+          <label class="block text-sm font-semibold">Map Location</label>
+          <button onClick={handleLocate}>
+            📍 Find My Location
+          </button>
+          <MapContainer
+          center={[37.7749, -122.4194]}
+          zoom={13}
+          style={{ height: '400px', width: '100%' }}>
             <TileLayer
               attribution='&copy; OpenStreetMap contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <LocationMarker onSelect={setSelectedLocation} />
+            {selectedLocation && <Marker position={selectedLocation} />}
+            <LocateControl
+              shouldLocate={shouldLocate}
+              onLocated={setSelectedLocation}
+              clearTrigger={() => setShouldLocate(false)}
+            />
           </MapContainer>
         </div>
         <div>
