@@ -21,15 +21,16 @@ import API from '../components/API';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
+// ✅ Set default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
 });
 
 function capitalizeWords(str) {
@@ -89,6 +90,10 @@ function Admin() {
         setError(error);
         setLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    L.Icon.Default.mergeOptions({ iconUrl: markerIcon, shadowUrl: markerShadow });
   }, []);
 
   const date = new Date()
