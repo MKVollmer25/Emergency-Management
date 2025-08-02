@@ -1,12 +1,16 @@
 // weather.js
 const express = require('express');
 
+require('dotenv').config();
+
 const router = express.Router();
 
-const OPENWEATHER_API_KEY = '60cd9b531907df255eb7d9c301e56806';
+const OPENWEATHER_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
 const CITY = 'San Francisco'; // You can make this configurable
 let cachedWeather = null;
 let lastFetched = 0;
+
+console.log(OPENWEATHER_API_KEY)
 
 async function fetchWeather() {
   try {
