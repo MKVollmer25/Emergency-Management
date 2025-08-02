@@ -36,6 +36,16 @@ db.serialize(() => {
 });
 
 db.serialize(() => {
+  db.run(`DROP TABLE reports`, (err) => {
+    if (err) {
+      console.error('❌ Failed to create table:', err.message);
+    } else {
+      console.log('✅ Reports table ready.');
+    }
+  });
+});
+
+db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
