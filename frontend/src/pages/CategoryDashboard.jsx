@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link,useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import API from '../components/API';
 
 function CategoryDashboard() {
@@ -27,13 +27,12 @@ function CategoryDashboard() {
 
   return (
   <div class="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
-    <Link to="/admin">Back</Link>
+    <Link to="/admin" className="hover:underline">Back</Link>
     <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
       <h2 class="text-lg font-semibold mb-2">{category_name} Reports</h2>
       <table className="table-auto border border-gray-300 w-full">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border px-4 py-2">ID</th>
             <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">Phone</th>
             <th className="border px-4 py-2">Category</th>
@@ -42,12 +41,12 @@ function CategoryDashboard() {
             <th className="border px-4 py-2">Date</th>
             <th className="border px-4 py-2">Description</th>
             <th className="border px-4 py-2">Status</th>
+            <th className="border px-4 py-2">View</th>
           </tr>
         </thead>
         <tbody>
           {data.map(row => (
             <tr key={row.id}>
-              <td className="border px-4 py-2">{row.id}</td>
               <td className="border px-4 py-2">{row.name}</td>
               <td className="border px-4 py-2">{row.phone}</td>
               <td className="border px-4 py-2">{row.category}</td>
@@ -56,6 +55,9 @@ function CategoryDashboard() {
               <td className="border px-4 py-2">{row.date}</td>
               <td className="border px-4 py-2">{row.description}</td>
               <td className="border px-4 py-2">{row.status}</td>
+              <td className="border px-4 py-2">
+                <Link className="hover:underline" to={"/report/" + row.id}>View</Link>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -8,10 +8,13 @@ const JWT_SECRET = 'your_secret_key_here';  // Use env variable in production
 
 // Register User
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
+  console.log("Registration post detected")
+  console.log("Username: " + username)
+  console.log("Password: " + password)
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    db.run(`INSERT INTO users (email, password) VALUES (?, ?)`, [email, hashedPassword], function (err) {
+    db.run(`INSERT INTO users (username, password) VALUES (?, ?)`, [username, hashedPassword], function (err) {
       if (err) {
         return res.status(400).json({ error: 'User already exists or DB error' });
       }

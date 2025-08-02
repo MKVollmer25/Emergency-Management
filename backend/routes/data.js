@@ -10,43 +10,8 @@ router.get('/get_data', (req, res) => {
   });
 });
 
-router.get('/get_flood_data', (req, res) => {
-  db.all("SELECT * FROM reports WHERE category = 'Flood'", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-router.get('/get_fire_data', (req, res) => {
-  db.all("SELECT * FROM reports WHERE category = 'Fire'", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-router.get('/get_water_data', (req, res) => {
-  db.all("SELECT * FROM reports WHERE category = 'Water'", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-router.get('/get_sewer_data', (req, res) => {
-  db.all("SELECT * FROM reports WHERE category = 'Sewer'", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-router.get('/get_electrical_data', (req, res) => {
-  db.all("SELECT * FROM reports WHERE category = 'Electrical'", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-router.get('/get_misc_data', (req, res) => {
-  db.all("SELECT * FROM reports WHERE category = 'Miscellaneous'", [], (err, rows) => {
+router.get('/get_alerts', (req, res) => {
+  db.all("SELECT * FROM alerts", [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
@@ -79,14 +44,67 @@ router.get('/get_report/:id', (req, res) => {
   });
 });
 
+router.post('/update_data', (req, res) => {
+  const { newStatus, id } = req.body;
+  console.log("ID: " + id)
+  console.log("Status: " + newStatus)
+  db.run(
+    `UPDATE reports
+    SET status = ?
+    WHERE id = ?`,
+    [newStatus, id],
+    function (err) {
+      if (err) {
+        console.log(err)
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id: this.lastID });
+    });
+});
+
+router.post('/delete_data', (req, res) => {
+  const { id } = req.body;
+  console.log("ID: " + id)
+  db.run(
+    `DELETE FROM reports
+    WHERE id = ?`,
+    [id],
+    function (err) {
+      if (err) {
+        console.log(err)
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id: this.lastID });
+    });
+});
+
+router.post('/delete_alert', (req, res) => {
+  const { id } = req.body;
+  console.log("ID: " + id)
+  db.run(
+    `DELETE FROM alerts
+    WHERE id = ?`,
+    [id],
+    function (err) {
+      if (err) {
+        console.log(err)
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id: this.lastID });
+    });
+});
+
 // POST new row
 router.post('/post_data', (req, res) => {
-  const { name, phone, category, severity, location, date, description, status } = req.body;
+  const { name, phone, category, severity, location, zipcode, latitude, longitude, date, description, status } = req.body;
   console.log("Name: " + name)
   console.log("Phone: " + phone)
   console.log("Category: " + category)
   console.log("Severity: " + severity)
   console.log("Location: " + location)
+  console.log("Zipcode: " + zipcode)
+  console.log("Latitude: " + latitude)
+  console.log("Longitude: " + longitude)
   console.log("Date: " + date)
   console.log("Description: " + description)
   console.log("Status: " + status)
@@ -97,11 +115,35 @@ router.post('/post_data', (req, res) => {
       category,
       severity,
       location,
+      zipcode,
+      latitude,
+      longitude,
       date,
       description,
       status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [name, phone, category, severity, location, date, description, status],
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [name, phone, category, severity, location, zipcode, latitude, longitude, date, description, status],
+    function (err) {
+      if (err) {
+        console.log(err)
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id: this.lastID });
+    });
+});
+
+router.post('/new_alert', (req, res) => {
+  const { severity, headline, description } = req.body;
+  console.log("Severity: " + severity)
+  console.log("Headline: " + headline)
+  console.log("Description: " + description)
+  db.run(
+    `INSERT INTO alerts (
+      severity,
+      headline,
+      description)
+    VALUES (?, ?, ?)`,
+    [severity, headline, description],
     function (err) {
       if (err) {
         console.log(err)

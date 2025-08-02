@@ -28,8 +28,8 @@ function ReportTracking() {
   }
 
   return (
-  <div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">
-    <Link to="/admin">Back</Link>
+  <div class="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
+    <Link to="/dashboard" className="hover:underline">Back</Link>
     <div class="bg-white p-4 space-y-3 rounded shadow mb-6 text-lg font-semibold">
       <div>
         <input class="w-full px-4 py-2 border rounded" 

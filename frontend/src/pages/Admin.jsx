@@ -8,10 +8,31 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import {
+  BarChart, Bar,
+  LineChart, Line,
+  PieChart, Pie, Cell,
+  XAxis, YAxis,
+  CartesianGrid, Tooltip, Legend,
+  ResponsiveContainer
+} from 'recharts';
 import API from '../components/API';
+
+function capitalizeWords(str) {
+  return str
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function fahrenheit(temp) {
+  return (Math.round((temp * (9 / 5) + 32) * 100) / 100)
+}
 
 function Admin() {
   const [data, setData] = useState([]);
+  const [weather, setWeather] = useState([]);
+  const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,6 +41,33 @@ function Admin() {
     API.get('/get_data')
       .then(response => {
         setData(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    API.get('/get_alerts')
+      .then(response => {
+        setAlerts(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    API.get('/weather')
+      .then(response => {
+        setWeather(response.data);
+        console.log(response.data)
         setLoading(false);
       })
       .catch(error => {
@@ -59,6 +107,18 @@ function Admin() {
     console.log("Token after logout:", localStorage.getItem("token"));
   }
 
+  const handleAlertDelete = async (id) => {
+    console.log("Delete")
+    try {
+      await API.post('/delete_alert', { id })
+      console.log("Delete successful")
+    } catch (err) {
+      setError(err.response?.data?.error || 'Delete failed');
+      console.log("Delete failed")
+    }
+    window.location.reload()
+  }
+
   const viewReport = (id) => {
     navigate("/report/" + id)
   }
@@ -69,20 +129,28 @@ function Admin() {
   return (
     <>
       <header className="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">
-        {isAuthenticated() ? "Valid login" : "Invalid login"}
+        San Francisco Emergency Management
       </header>
       <div className="max-w-7xl mx-auto flex justify-between px-4 py-4">
         <div>{formatted_date}, {formatted_time}</div>
-        <div>
-          <Link to='/' className="hover:underline" onClick={handleLogout}>Log out</Link>
+        <div className="space-x-6">
+          <Link to='/new_alert' className="hover:underline">Create Alert</Link>
+          <Link to='/new_user' className="hover:underline">New User</Link>
+          <Link to='/' className="hover:underline" onClick={handleLogout}>Log Out</Link>
         </div>
       </div>
       <main className="max-w-7xl mx-auto px-4 pb-16">
         <div>
           <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-900 p-4 rounded mb-6">
             <p className="text-lg font-semibold">Weather in San Francisco:</p>
-            <p>Temperature: WIP</p>
-            <p>Conditions: WIP</p>
+            {weather?.data?.main ? (
+              <>
+                <p>Temperature: {fahrenheit(weather.data.main.temp)} °F ({weather.data.main.temp} °C)</p>
+                <p>Conditions: {capitalizeWords(weather.data.weather?.[0]?.description) || 'N/A'}</p>
+              </>
+            ) : (
+              <p>Loading weather data...</p>
+            )}
           </div>
         </div>
         <div className="grid grid-cols-3 grid-rows-2 gap-6 mb-8">
@@ -153,15 +221,144 @@ function Admin() {
         <div class="grid grid-cols-2 grid-rows-2 gap-6 mb-6">
           <div class="bg-white p-4 rounded shadow">
             <h2 class="text-lg font-semibold mb-2">By Category</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={
+                Object.entries(data.reduce((acc, r) => {
+                  acc[r.category] = (acc[r.category] || 0) + 1;
+                  return acc;
+                }, {})).map(([category, count]) => ({ category, count }))
+              }>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="category" />
+                <YAxis />
+                <Tooltip
+                itemStyle={{ color: '#000000' }}
+                formatter={(value, name) => [value, name === 'count' ? 'Count' : name]}
+                />
+                <Bar dataKey="count" fill="#6464ffff" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
           <div class="bg-white p-4 rounded shadow">
             <h2 class="text-lg font-semibold mb-2">Over Time</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={
+                Object.entries(data.reduce((acc, r) => {
+                  const date = new Date(r.date).toLocaleDateString();
+                  acc[date] = (acc[date] || 0) + 1;
+                  return acc;
+                }, {})).map(([date, count]) => ({ date, count }))
+              }>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip
+                itemStyle={{ color: '#000000' }}
+                formatter={(value, name) => [value, name === 'count' ? 'Count' : name]}
+                />
+                <Line type="monotone" dataKey="count" stroke="#6464ffff" />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
           <div class="bg-white p-4 rounded shadow">
             <h2 class="text-lg font-semibold mb-2">By Status</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Tooltip />
+                <Legend 
+                  formatter={(value) => <span style={{ color: '#000000' }}>{value}</span>}
+                />
+                <Pie
+                  data={
+                    Object.entries(data.reduce((acc, r) => {
+                      acc[r.status] = (acc[r.status] || 0) + 1;
+                      return acc;
+                    }, {})).map(([status, value]) => ({ status, value }))
+                  }
+                  dataKey="value"
+                  nameKey="status"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  label
+                >
+                  {['#ff0000ff', '#ffbb00ff', '#00aa00ff'].map((color, i) => (
+                    <Cell key={i} fill={color} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
           <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-lg font-semibold mb-2">Available Responders</h2>
+            <h2 class="text-lg font-semibold mb-2">By Zip Code</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart
+                layout="vertical"
+                data={
+                  Object.entries(data.reduce((acc, r) => {
+                    acc[r.zipcode] = (acc[r.zipcode] || 0) + 1;
+                    return acc;
+                  }, {})).map(([zip, count]) => ({ zip, count }))
+                }
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="zip" />
+                <Tooltip
+                itemStyle={{ color: '#000000' }}
+                formatter={(value, name) => [value, name === 'count' ? 'Count' : name]}
+                />
+                <Bar dataKey="count" fill="#6464ffff" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
+          <h2 class="text-xl font-semibold mb-4 text-gray-700">Active Alerts</h2>
+          <div className="space-y-4">
+            {alerts.map(alert => {
+            console.log(alert.severity)
+            if (alert.severity == "Minor") {
+              return (
+              <div key={alert.id} class="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow">
+                <div className="flex justify-between items-center">
+                  <h3 class="text-lg font-bold text-amber-500 mb-2">{alert.headline}</h3>
+                  <p>Severity: Minor</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p>{alert.description}</p>
+                  <Link className="hover:underline" onClick={() => handleAlertDelete(alert.id)}>Delete Alert</Link>
+                </div>
+              </div>
+              )
+            } else if (alert.severity == "Moderate") {
+              return (
+              <div key={alert.id} class="bg-white border-t-4 border-orange-500 rounded-2xl p-6 shadow">
+                <div className="flex justify-between items-center">
+                  <h3 class="text-lg font-bold text-orange-500 mb-2">{alert.headline}</h3>
+                  <p>Severity: Moderate</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p>{alert.description}</p>
+                  <Link className="hover:underline" onClick={() => handleAlertDelete(alert.id)}>Delete Alert</Link>
+                </div>
+              </div>
+              )
+            } else {
+              return (
+              <div key={alert.id} class="bg-white border-t-4 border-red-600 rounded-2xl p-6 shadow">
+                <div className="flex justify-between items-center">
+                  <h3 class="text-lg font-bold text-red-600 mb-2">{alert.headline}</h3>
+                  <p>Severity: Major</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p>{alert.description}</p>
+                  <Link className="hover:underline" onClick={() => handleAlertDelete(alert.id)}>Delete Alert</Link>
+                </div>
+              </div>
+              )
+            }
+            })}
           </div>
         </div>
         <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
@@ -169,12 +366,12 @@ function Admin() {
           <table className="table-auto border border-gray-300 w-full">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border px-4 py-2">ID</th>
                 <th className="border px-4 py-2">Name</th>
                 <th className="border px-4 py-2">Phone</th>
                 <th className="border px-4 py-2">Category</th>
                 <th className="border px-4 py-2">Severity</th>
                 <th className="border px-4 py-2">Location</th>
+                <th className="border px-4 py-2">Zip Code</th>
                 <th className="border px-4 py-2">Date</th>
                 <th className="border px-4 py-2">Description</th>
                 <th className="border px-4 py-2">Status</th>
@@ -184,12 +381,12 @@ function Admin() {
             <tbody>
               {data.map(row => (
                 <tr key={row.id}>
-                  <td className="border px-4 py-2">{row.id}</td>
                   <td className="border px-4 py-2">{row.name}</td>
                   <td className="border px-4 py-2">{row.phone}</td>
                   <td className="border px-4 py-2">{row.category}</td>
                   <td className="border px-4 py-2">{row.severity}</td>
                   <td className="border px-4 py-2">{row.location}</td>
+                  <td className="border px-4 py-2">{row.zipcode}</td>
                   <td className="border px-4 py-2">{row.date}</td>
                   <td className="border px-4 py-2">{row.description}</td>
                   <td className="border px-4 py-2">{row.status}</td>
@@ -204,16 +401,20 @@ function Admin() {
         <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
           <h2 class="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>
           <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
-            <MapContainer center={[47.6062, -122.3321]} zoom={13} className="h-full w-full">
+            <MapContainer center={[37.7749, -122.4194]} zoom={13} className="h-full w-full">
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[47.6062, -122.3321]}>
+              {data.map((report) => (
+              <Marker key={report.id} position={[report.latitude, report.longitude]}>
                 <Popup>
-                  Seattle, WA
+                  <p>{report.location}</p>
+                  <p>{report.description}</p>
+                  <Link className="hover:underline" to={"/report/" + report.id}>View</Link>
                 </Popup>
               </Marker>
+              ))}
             </MapContainer>
           </div>
         </div>

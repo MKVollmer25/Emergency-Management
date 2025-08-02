@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 function Home() {
   const navigate = useNavigate()
   const userPage = () => {navigate('/dashboard')}
-  const adminPage = () => {navigate('/adminlogin')}
+  const adminPage = () => {navigate('/admin')}
 
   return (
     <div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">

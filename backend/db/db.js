@@ -36,17 +36,6 @@ db.serialize(() => {
 });
 
 db.serialize(() => {
-  db.run(`DROP TABLE reports`, 
-    (err) => {
-    if (err) {
-      console.error('❌ Failed to reset table:', err.message);
-    } else {
-      console.log('✅ Reports table reset.');
-    }
-  });
-});
-
-db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,6 +44,9 @@ db.serialize(() => {
       category TEXT NOT NULL,
       severity INT NOT NULL,
       location TEXT NOT NULL,
+      zipcode TEXT NOT NULL,
+      latitude DECIMAL (9, 4),
+      longitude DECIMAL (9, 4),
       date DATETIME NOT NULL,
       description TEXT NOT NULL,
       status TEXT NOT NULL
@@ -64,6 +56,23 @@ db.serialize(() => {
       console.error('❌ Failed to create table:', err.message);
     } else {
       console.log('✅ Reports table ready.');
+    }
+  });
+});
+
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS alerts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      severity TEXT NOT NULL,
+      headline TEXT NOT NULL,
+      description TEXT NOT NULL
+    )
+  `, (err) => {
+    if (err) {
+      console.error('❌ Failed to create table:', err.message);
+    } else {
+      console.log('✅ Alerts table ready.');
     }
   });
 });
