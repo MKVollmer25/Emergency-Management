@@ -14,8 +14,6 @@ app.use('/api', authRoutes);
 app.use('/api', dataRoutes);
 app.use('/api', weatherRoute);
 
-const db = require('./db/db')
-
 // Start the Server
 const PORT = 5000;
 app.listen(PORT, () => {

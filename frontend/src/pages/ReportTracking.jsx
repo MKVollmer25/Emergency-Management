@@ -45,7 +45,6 @@ function ReportTracking() {
       <table className="table-auto border border-gray-300 w-full">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border px-4 py-2">ID</th>
             <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">Phone</th>
             <th className="border px-4 py-2">Category</th>
@@ -59,7 +58,6 @@ function ReportTracking() {
         <tbody>
           {data.map(row => (
             <tr key={row.id}>
-              <td className="border px-4 py-2">{row.id}</td>
               <td className="border px-4 py-2">{row.name}</td>
               <td className="border px-4 py-2">{row.phone}</td>
               <td className="border px-4 py-2">{row.category}</td>
