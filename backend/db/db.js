@@ -49,7 +49,8 @@ db.serialize(() => {
       longitude DECIMAL (9, 4),
       date DATETIME NOT NULL,
       description TEXT NOT NULL,
-      status TEXT NOT NULL
+      status TEXT NOT NULL,
+      response TEXT NOT NULL
     )
   `, (err) => {
     if (err) {

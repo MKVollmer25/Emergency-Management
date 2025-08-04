@@ -62,6 +62,24 @@ router.post('/update_data', (req, res) => {
     });
 });
 
+router.post('/update_response', (req, res) => {
+  const { response, id } = req.body;
+  console.log("ID: " + id)
+  console.log("Response: " + response)
+  db.run(
+    `UPDATE reports
+    SET response = ?
+    WHERE id = ?`,
+    [response, id],
+    function (err) {
+      if (err) {
+        console.log(err)
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id: this.lastID });
+    });
+});
+
 router.post('/delete_data', (req, res) => {
   const { id } = req.body;
   console.log("ID: " + id)
@@ -96,7 +114,7 @@ router.post('/delete_alert', (req, res) => {
 
 // POST new row
 router.post('/post_data', (req, res) => {
-  const { name, phone, category, severity, location, zipcode, latitude, longitude, date, description, status } = req.body;
+  const { name, phone, category, severity, location, zipcode, latitude, longitude, date, description, status, response } = req.body;
   console.log("Name: " + name)
   console.log("Phone: " + phone)
   console.log("Category: " + category)
@@ -108,6 +126,7 @@ router.post('/post_data', (req, res) => {
   console.log("Date: " + date)
   console.log("Description: " + description)
   console.log("Status: " + status)
+  console.log("Response: " + response)
   db.run(
     `INSERT INTO reports (
       name,
@@ -120,9 +139,10 @@ router.post('/post_data', (req, res) => {
       longitude,
       date,
       description,
-      status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [name, phone, category, severity, location, zipcode, latitude, longitude, date, description, status],
+      status,
+      response)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [name, phone, category, severity, location, zipcode, latitude, longitude, date, description, status, response],
     function (err) {
       if (err) {
         console.log(err)

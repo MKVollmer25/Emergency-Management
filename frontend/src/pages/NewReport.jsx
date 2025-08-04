@@ -49,7 +49,6 @@ function NewReport() {
     
     setInProgress(true)
     if (inProgress) {
-      console.log("Duplicate report")
       return
     }
 
@@ -58,45 +57,37 @@ function NewReport() {
       const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location + ', San Francisco, CA')}`);
       const data = await response.json();
       if (name == "") {
-        console.log("Missing name")
         setInProgress(false)
         return
       }
       if (phone == "") {
-        console.log("Missing phone")
         setInProgress(false)
         return
       }
       if (category == "") {
-        console.log("Missing category")
         setInProgress(false)
         return
       }
       if (severity == "") {
-        console.log("Missing severity")
         setInProgress(false)
         return
       }
       if (description == "") {
-        console.log("Missing description")
         setInProgress(false)
         return
       }
       if (location == "") {
-        console.log("Missing location")
         setInProgress(false)
         return
       }
       if (data && data.length > 0) {
         latitude = data[0].lat;
         longitude = data[0].lon;
-        console.log("Geocode: " + latitude + ", " + longitude)
 
         try {
           const reverseRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
           const reverseData = await reverseRes.json();
           zipcode = reverseData.address?.postcode || '';
-          console.log(zipcode)
         } catch (reverseErr) {
           console.warn("Reverse geocoding failed:", reverseErr);
         }
@@ -107,6 +98,8 @@ function NewReport() {
     } catch (geoErr) {
       console.error("Geocoding failed: ", geoErr);
     }
+
+    const response = ""
 
     try {
       await API.post('/post_data', {
@@ -120,13 +113,12 @@ function NewReport() {
         longitude,
         date,
         description,
-        status
+        status,
+        response
       });
       setSubmitted(true);
-      console.log("Submission successful");
     } catch (err) {
       setError(err.response?.data?.error || 'Submission failed');
-      console.log("Submission failed");
     }
   };
 
@@ -210,7 +202,7 @@ function NewReport() {
                 {inProgress ? "Submitting..." : "Submit"}
               </button>
             </div>
-            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {error && <p className="text-red-500 text-sm text-center">Report creation failed</p>}
           </div>
         </div>
       )}

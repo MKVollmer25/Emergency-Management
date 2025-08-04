@@ -22,10 +22,8 @@ function NewAlert() {
         }
       )
       setSubmitted(true)
-      console.log("Submission successful")
     } catch (err) {
       setError(err.response?.data?.error || 'Submission failed');
-      console.log("Submission failed")
     }
   };
 
@@ -37,15 +35,15 @@ function NewAlert() {
           <Link to="/admin" className="hover:underline">Back</Link>
         </div>
       ) : (
-      <div class="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
+      <div className="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
         <Link to="/admin" className="hover:underline">Back</Link>
-        <div class="bg-white p-4 rounded-lg shadow-md w-full items-center justify-center max-w-sm space-y-4">
-          <h1 class="text-center font-bold text-2xl">
+        <div className="bg-white p-4 rounded-lg shadow-md w-full items-center justify-center max-w-sm space-y-4">
+          <h1 className="text-center font-bold text-2xl">
             Create New Alert
           </h1>
           <div>
-            <label class="block text-sm font-semibold">Severity</label>
-            <select class="w-full px-4 py-2 border rounded"
+            <label className="block text-sm font-semibold">Severity</label>
+            <select className="w-full px-4 py-2 border rounded"
             name="severity"
             value={severity}
             onChange={(e) => setSeverity(e.target.value)}
@@ -57,24 +55,25 @@ function NewAlert() {
             </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold">Headline</label>
-            <input class="w-full px-4 py-2 border rounded"
+            <label className="block text-sm font-semibold">Headline</label>
+            <input className="w-full px-4 py-2 border rounded"
             name="headline"
             value={headline}
             onChange={(e) => setHeadline(e.target.value)}
             required />
           </div>
           <div>
-            <label class="block text-sm font-semibold">Description</label>
-            <textarea class="w-full px-4 py-2 border rounded"
+            <label className="block text-sm font-semibold">Description</label>
+            <textarea className="w-full px-4 py-2 border rounded"
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required />
           </div>
           <div>
-            <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition" onClick={handleSubmit}>Create</button>
+            <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition" onClick={handleSubmit}>Create</button>
           </div>
+          {error && <p className="text-red-500 text-sm text-center">Alert creation failed</p>}
         </div>
       </div>
       )}

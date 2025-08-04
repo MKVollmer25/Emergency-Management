@@ -8,6 +8,7 @@ function ReportPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("")
+  const [response, setResponse] = useState("")
   const [deleteConfirmation, setDeleteConfirmation] = useState(false)
 
   useEffect(() => {
@@ -16,6 +17,7 @@ function ReportPage() {
       setData(response.data[0]);
       console.log(response.data[0]);
       setStatus(response.data[0].status);
+      setResponse(response.data[0].response)
       setLoading(false);
     })
     .catch(error => {
@@ -49,14 +51,25 @@ function ReportPage() {
     }
   }
 
+  const handleResponse = async () => {
+    console.log("Delete")
+    try {
+      await API.post('/update_response', { response, id })
+      console.log("Update successful")
+    } catch (err) {
+      setError(err.response?.data?.error || 'Update failed');
+      console.log("Update failed")
+    }
+  }
+
   const toggleDelete = () => {
     setDeleteConfirmation(!deleteConfirmation)
   }
 
   return (
-    <div class="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
+    <div className="min-h-screen bg-gray-100 flex space-y-3 flex-col items-center justify-center p-8">
       <Link to="/admin" className="hover:underline">Back</Link>
-      <div class="bg-white p-4 rounded-lg shadow-md w-full items-center justify-center max-w-sm space-y-4">
+      <div className="bg-white p-4 rounded-lg shadow-md w-full items-center justify-center max-w-sm space-y-4">
         <p><strong>ID:</strong> {data.id}</p>
         <p><strong>Name:</strong> {data.name}</p>
         <p><strong>Category:</strong> {data.category}</p>
@@ -64,16 +77,23 @@ function ReportPage() {
         <p><strong>Date:</strong> {data.date}</p>
         <p><strong>Location:</strong> {data.location}</p>
         <p><strong>Status:</strong>
-        <select class="ml-2 px-4 py-2 border rounded"
-          name="status"
-          value={status}
-          onChange={handleStatus}
-          required>
-            <option value="Open">Open</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Done">Done</option>
+          <select className="ml-2 px-4 py-2 border rounded"
+            name="status"
+            value={status}
+            onChange={handleStatus}
+            required>
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Done">Done</option>
           </select>
         </p>
+        <p><strong>Response:</strong></p>
+        <textarea className="w-full px-4 py-2 border rounded"
+        name="response"
+        value={response}
+        onChange={(e) => setResponse(e.target.value)}
+        required />
+        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition" onClick={handleResponse}>Update Response</button>
       </div>
       <div>
       {deleteConfirmation

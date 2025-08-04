@@ -82,7 +82,6 @@ function Admin() {
     API.get('/weather')
       .then(response => {
         setWeather(response.data);
-        console.log(response.data)
         setLoading(false);
       })
       .catch(error => {
@@ -114,26 +113,18 @@ function Admin() {
 
   const isAuthenticated = () => {
     const token = localStorage.getItem('token')
-    console.log(token)
     return token != null // or add extra checks like token expiration
   };
 
   const handleLogout = () => {
-    console.log("Token before logout:", localStorage.getItem("token"));
-    console.log(isAuthenticated())
     localStorage.removeItem('token')
-    console.log("Logout request")
-    console.log("Token after logout:", localStorage.getItem("token"));
   }
 
   const handleAlertDelete = async (id) => {
-    console.log("Delete")
     try {
       await API.post('/delete_alert', { id })
-      console.log("Delete successful")
     } catch (err) {
       setError(err.response?.data?.error || 'Delete failed');
-      console.log("Delete failed")
     }
     window.location.reload()
   }
@@ -148,7 +139,22 @@ function Admin() {
   return (
     <>
       <header className="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">
-        San Francisco Emergency Management
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-start space-y-4 md:space-y-0">
+          <div className="text-center md:text-left">
+            <h1 className="text-3xl font-extrabold tracking-wide mb-1">RexusOps360™</h1>
+            <p className="text-sm text-gray-300">Incident Tracking Operational Dashboard</p>
+            <div className="mt-2 flex items-center justify-center md:justify-start space-x-2">
+              <span className="text-sm text-gray-300">Powered by</span>
+              <a href="https://amptier.net" target="_blank">
+                <img src="/amptier.png" alt="Amptier Logo" className="h-7 md:h-8 w-auto" />
+              </a>
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <img src="/rexus.png" alt="Rexus Logo" className="h-16 w-auto drop-shadow-md" />
+            <a href="https://www.rexus-group.com/" className="hover:underline font-medium text-sm text-gray-300 text-center">www.rexus-group.com</a>
+          </div>
+        </div>
       </header>
       <div className="max-w-7xl mx-auto flex justify-between px-4 py-4">
         <div>{formatted_date}, {formatted_time}</div>
@@ -173,73 +179,73 @@ function Admin() {
           </div>
         </div>
         <div className="grid grid-cols-3 grid-rows-2 gap-6 mb-8">
-          <a href="/category/flood" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
-            <div class="mb-2 text-center">
+          <a href="/category/flood" className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+            <div className="mb-2 text-center">
               <FontAwesomeIcon icon={faWater} size="2x" color="#999999" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Flood Dashboard</h2>
-              <p class="text-sm text-gray-600">Live flood incident tracking</p>
+              <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Flood Dashboard</h2>
+              <p className="text-sm text-gray-600">Live flood incident tracking</p>
             </div>
-            <div class="mt-2 text-right">
-              <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
+            <div className="mt-2 text-right">
+              <span className="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/category/fire" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
-            <div class="mb-2 text-center">
+          <a href="/category/fire" className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+            <div className="mb-2 text-center">
               <FontAwesomeIcon icon={faFire} size="2x" color="#FF7700" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Fire Dashboard</h2>
-              <p class="text-sm text-gray-600">Live fire incident tracking</p>
+              <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Fire Dashboard</h2>
+              <p className="text-sm text-gray-600">Live fire incident tracking</p>
             </div>
-            <div class="mt-2 text-right">
-              <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
+            <div className="mt-2 text-right">
+              <span className="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/category/water" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
-            <div class="mb-2 text-center">
+          <a href="/category/water" className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+            <div className="mb-2 text-center">
               <FontAwesomeIcon icon={faDroplet} size="2x" color="#0000FF" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Water Dashboard</h2>
-              <p class="text-sm text-gray-600">Live water incident tracking</p>
+              <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Water Dashboard</h2>
+              <p className="text-sm text-gray-600">Live water incident tracking</p>
             </div>
-            <div class="mt-2 text-right">
-              <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
+            <div className="mt-2 text-right">
+              <span className="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/category/sewer" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
-            <div class="mb-2 text-center">
+          <a href="/category/sewer" className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+            <div className="mb-2 text-center">
               <FontAwesomeIcon icon={faToilet} size="2x" color="#993333" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Sewer Dashboard</h2>
-              <p class="text-sm text-gray-600">Live sewer incident tracking</p>
+              <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Sewer Dashboard</h2>
+              <p className="text-sm text-gray-600">Live sewer incident tracking</p>
             </div>
-            <div class="mt-2 text-right">
-              <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
+            <div className="mt-2 text-right">
+              <span className="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/category/electrical" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
-            <div class="mb-2 text-center">
+          <a href="/category/electrical" className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+            <div className="mb-2 text-center">
               <FontAwesomeIcon icon={faBolt} size="2x" color="#D8D800" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Electrical Dashboard</h2>
-              <p class="text-sm text-gray-600">Live electrical incident tracking</p>
+              <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Electrical Dashboard</h2>
+              <p className="text-sm text-gray-600">Live electrical incident tracking</p>
             </div>
-            <div class="mt-2 text-right">
-              <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
+            <div className="mt-2 text-right">
+              <span className="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
-          <a href="/category/misc" class="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
-            <div class="mb-2 text-center">
+          <a href="/category/misc" className="bg-white border border-gray-200 rounded-xl shadow-md p-6 hover:shadow-lg hover:border-blue-500 transition-all duration-300 group">
+            <div className="mb-2 text-center">
               <FontAwesomeIcon icon={faCircleQuestion} size="2x" color="#555555" />
-              <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Miscellaneous Dashboard</h2>
-              <p class="text-sm text-gray-600">Live miscellaneous incident tracking</p>
+              <h2 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Miscellaneous Dashboard</h2>
+              <p className="text-sm text-gray-600">Live miscellaneous incident tracking</p>
             </div>
-            <div class="mt-2 text-right">
-              <span class="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
+            <div className="mt-2 text-right">
+              <span className="text-sm text-blue-500 font-medium group-hover:underline">View →</span>
             </div>
           </a>
         </div>
-        <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
-          Total Incidents: <span class="text-blue-600">{data.length}</span>
+        <div className="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
+          Total Incidents: <span className="text-blue-600">{data.length}</span>
         </div>
-        <div class="grid grid-cols-2 grid-rows-2 gap-6 mb-6">
-          <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-lg font-semibold mb-2">By Category</h2>
+        <div className="grid grid-cols-2 grid-rows-2 gap-6 mb-6">
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-2">By Category</h2>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={
                 Object.entries(data.reduce((acc, r) => {
@@ -258,8 +264,8 @@ function Admin() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-lg font-semibold mb-2">Over Time</h2>
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-2">Over Time</h2>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={
                 Object.entries(data.reduce((acc, r) => {
@@ -279,8 +285,8 @@ function Admin() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-lg font-semibold mb-2">By Status</h2>
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-2">By Status</h2>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Tooltip />
@@ -308,8 +314,8 @@ function Admin() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-lg font-semibold mb-2">By Zip Code</h2>
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-2">By Zip Code</h2>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart
                 layout="vertical"
@@ -332,16 +338,15 @@ function Admin() {
             </ResponsiveContainer>
           </div>
         </div>
-        <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
-          <h2 class="text-xl font-semibold mb-4 text-gray-700">Active Alerts</h2>
+        <div className="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Active Alerts</h2>
           <div className="space-y-4">
             {alerts.map(alert => {
-            console.log(alert.severity)
             if (alert.severity == "Minor") {
               return (
-              <div key={alert.id} class="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow">
+              <div key={alert.id} className="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow">
                 <div className="flex justify-between items-center">
-                  <h3 class="text-lg font-bold text-amber-500 mb-2">{alert.headline}</h3>
+                  <h3 className="text-lg font-bold text-amber-500 mb-2">{alert.headline}</h3>
                   <p>Severity: Minor</p>
                 </div>
                 <div className="flex justify-between items-center">
@@ -352,9 +357,9 @@ function Admin() {
               )
             } else if (alert.severity == "Moderate") {
               return (
-              <div key={alert.id} class="bg-white border-t-4 border-orange-500 rounded-2xl p-6 shadow">
+              <div key={alert.id} className="bg-white border-t-4 border-orange-500 rounded-2xl p-6 shadow">
                 <div className="flex justify-between items-center">
-                  <h3 class="text-lg font-bold text-orange-500 mb-2">{alert.headline}</h3>
+                  <h3 className="text-lg font-bold text-orange-500 mb-2">{alert.headline}</h3>
                   <p>Severity: Moderate</p>
                 </div>
                 <div className="flex justify-between items-center">
@@ -365,9 +370,9 @@ function Admin() {
               )
             } else {
               return (
-              <div key={alert.id} class="bg-white border-t-4 border-red-600 rounded-2xl p-6 shadow">
+              <div key={alert.id} className="bg-white border-t-4 border-red-600 rounded-2xl p-6 shadow">
                 <div className="flex justify-between items-center">
-                  <h3 class="text-lg font-bold text-red-600 mb-2">{alert.headline}</h3>
+                  <h3 className="text-lg font-bold text-red-600 mb-2">{alert.headline}</h3>
                   <p>Severity: Major</p>
                 </div>
                 <div className="flex justify-between items-center">
@@ -380,36 +385,36 @@ function Admin() {
             })}
           </div>
         </div>
-        <div class="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
-          <h2 class="text-lg font-semibold mb-2">Recent Reports</h2>
-          <table className="table-auto border border-gray-300 w-full">
+        <div className="bg-white p-4 rounded shadow mb-6 text-lg font-semibold">
+          <h2 className="text-lg font-semibold mb-2">Recent Reports</h2>
+          <table className="table-auto border border-gray-300 w-full text-sm">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border px-4 py-2">Name</th>
-                <th className="border px-4 py-2">Phone</th>
-                <th className="border px-4 py-2">Category</th>
-                <th className="border px-4 py-2">Severity</th>
-                <th className="border px-4 py-2">Location</th>
-                <th className="border px-4 py-2">Zip Code</th>
-                <th className="border px-4 py-2">Date</th>
-                <th className="border px-4 py-2">Description</th>
-                <th className="border px-4 py-2">Status</th>
-                <th className="border px-4 py-2">View</th>
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Phone</th>
+                <th className="border p-2">Category</th>
+                <th className="border p-2">Severity</th>
+                <th className="border p-2">Location</th>
+                <th className="border p-2">Date</th>
+                <th className="border p-2">Description</th>
+                <th className="border p-2">Status</th>
+                <th className="border p-2">Response</th>
+                <th className="border p-2">View</th>
               </tr>
             </thead>
             <tbody>
               {data.map(row => (
                 <tr key={row.id}>
-                  <td className="border px-4 py-2">{row.name}</td>
-                  <td className="border px-4 py-2">{row.phone}</td>
-                  <td className="border px-4 py-2">{row.category}</td>
-                  <td className="border px-4 py-2">{row.severity}</td>
-                  <td className="border px-4 py-2">{row.location}</td>
-                  <td className="border px-4 py-2">{row.zipcode}</td>
-                  <td className="border px-4 py-2">{row.date}</td>
-                  <td className="border px-4 py-2">{row.description}</td>
-                  <td className="border px-4 py-2">{row.status}</td>
-                  <td className="border px-4 py-2">
+                  <td className="border p-2">{row.name}</td>
+                  <td className="border p-2">{row.phone}</td>
+                  <td className="border p-2">{row.category}</td>
+                  <td className="border p-2">{row.severity}</td>
+                  <td className="border p-2">{row.location}</td>
+                  <td className="border p-2">{row.date}</td>
+                  <td className="border p-2">{row.description}</td>
+                  <td className="border p-2">{row.status}</td>
+                  <td className="border p-2">{row.response}</td>
+                  <td className="border p-2">
                     <Link className="hover:underline" to={"/report/" + row.id}>View</Link>
                   </td>
                 </tr>
@@ -417,8 +422,8 @@ function Admin() {
             </tbody>
           </table>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
-          <h2 class="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>
+        <div className="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Report Map</h2>
           <div className="h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
             <MapContainer center={[37.7749, -122.4194]} zoom={13} className="h-full w-full">
               <TileLayer

@@ -56,7 +56,6 @@ function Dashboard() {
     API.get('/weather')
       .then(response => {
         setWeather(response.data);
-        console.log(response.data)
         setLoading(false);
       })
       .catch(error => {
@@ -72,7 +71,22 @@ function Dashboard() {
   return (
     <>
       <header className="bg-blue-900 text-white shadow-md px-6 py-4 md:py-6">
-        San Francisco Emergency Management
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-start space-y-4 md:space-y-0">
+          <div className="text-center md:text-left">
+            <h1 className="text-3xl font-extrabold tracking-wide mb-1">RexusOps360™</h1>
+            <p className="text-sm text-gray-300">Incident Tracking Operational Dashboard</p>
+            <div className="mt-2 flex items-center justify-center md:justify-start space-x-2">
+              <span className="text-sm text-gray-300">Powered by</span>
+              <a href="https://amptier.net" target="_blank">
+                <img src="/amptier.png" alt="Amptier Logo" className="h-7 md:h-8 w-auto" />
+              </a>
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <img src="/rexus.png" alt="Rexus Logo" className="h-16 w-auto drop-shadow-md" />
+            <a href="https://www.rexus-group.com/" className="hover:underline font-medium text-sm text-gray-300 text-center">www.rexus-group.com</a>
+          </div>
+        </div>
       </header>
       <div className="max-w-7xl mx-auto flex justify-between px-4 py-4 items-center">
         <div>{formatted_date}, {formatted_time}</div>
@@ -92,26 +106,25 @@ function Dashboard() {
             )}
           </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <a href="/new_report" class="bg-white border-t-4 border-blue-600 rounded-2xl p-6 shadow hover:bg-blue-50">
-            <h3 class="text-lg font-bold text-blue-700 mb-2">File a New Report</h3>
-            <p class="text-gray-600">Report emergencies quickly and easily.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <a href="/new_report" className="bg-white border-t-4 border-blue-600 rounded-2xl p-6 shadow hover:bg-blue-50">
+            <h3 className="text-lg font-bold text-blue-700 mb-2">File a New Report</h3>
+            <p className="text-gray-600">Report emergencies quickly and easily.</p>
           </a>
-          <a href="/report_tracking" class="bg-white border-t-4 border-green-600 rounded-2xl p-6 shadow hover:bg-green-50">
-            <h3 class="text-lg font-bold text-green-700 mb-2">View Your Complaints</h3>
-            <p class="text-gray-600">Track the status of your past complaints and get updates.</p>
+          <a href="/report_tracking" className="bg-white border-t-4 border-green-600 rounded-2xl p-6 shadow hover:bg-green-50">
+            <h3 className="text-lg font-bold text-green-700 mb-2">View Your Complaints</h3>
+            <p className="text-gray-600">Track the status of your past complaints and get updates.</p>
           </a>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
-          <h2 class="text-xl font-semibold mb-4 text-gray-700">Active Alerts</h2>
+        <div className="bg-white p-6 rounded-lg shadow overflow-x-auto mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Active Alerts</h2>
           <div className="space-y-4">
             {alerts.map(alert => {
-            console.log(alert.severity)
             if (alert.severity == "Minor") {
               return (
-              <div key={alert.id} class="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow">
+              <div key={alert.id} className="bg-white border-t-4 border-amber-500 rounded-2xl p-6 shadow">
                 <div className="flex justify-between items-center">
-                  <h3 class="text-lg font-bold text-amber-500 mb-2">{alert.headline}</h3>
+                  <h3 className="text-lg font-bold text-amber-500 mb-2">{alert.headline}</h3>
                   <p>Severity: Minor</p>
                 </div>
                 <p>{alert.description}</p>
@@ -119,9 +132,9 @@ function Dashboard() {
               )
             } else if (alert.severity == "Moderate") {
               return (
-              <div key={alert.id} class="bg-white border-t-4 border-orange-500 rounded-2xl p-6 shadow">
+              <div key={alert.id} className="bg-white border-t-4 border-orange-500 rounded-2xl p-6 shadow">
                 <div className="flex justify-between items-center">
-                  <h3 class="text-lg font-bold text-orange-500 mb-2">{alert.headline}</h3>
+                  <h3 className="text-lg font-bold text-orange-500 mb-2">{alert.headline}</h3>
                   <p>Severity: Moderate</p>
                 </div>
                 <p>{alert.description}</p>
@@ -129,9 +142,9 @@ function Dashboard() {
               )
             } else {
               return (
-              <div key={alert.id} class="bg-white border-t-4 border-red-600 rounded-2xl p-6 shadow">
+              <div key={alert.id} className="bg-white border-t-4 border-red-600 rounded-2xl p-6 shadow">
                 <div className="flex justify-between items-center">
-                  <h3 class="text-lg font-bold text-red-600 mb-2">{alert.headline}</h3>
+                  <h3 className="text-lg font-bold text-red-600 mb-2">{alert.headline}</h3>
                   <p>Severity: Major</p>
                 </div>
                 <p>{alert.description}</p>
